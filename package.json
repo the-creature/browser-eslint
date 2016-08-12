@@ -1,0 +1,30 @@
+{
+  "name": "browser-eslint",
+  "version": "0.0.1",
+  "description": "Outputs webpack build errors in the browser console.",
+  "main": "browserEslint.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/the-creature/browser-eslint.git"
+  },
+  "keywords": [
+    "Webpack",
+    "Browser",
+    "Console",
+    "Build",
+    "Error"
+  ],
+  "author": "The Creature <liccy@inkskill.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/the-creature/-eslint/issues"
+  },
+  "homepage": "https://github.com/the-creature/browser-eslint",
+  "dependencies": {
+    "strip-ansi": "^3.0.1",
+    "webpack": "^1.5.3"
+  }
+}
