@@ -3,14 +3,18 @@
 var path = require('path');
 var stripAnsi = require('strip-ansi');
 
-var BrowserEslint = function() {};
+var BrowserEslint = function(filename) {
+    this.filename = filename;
+};
 
 BrowserEslint.prototype.apply = function(compiler) {
+    var self = this;
     compiler.plugin('done', function(stats) {
         if (stats.hasErrors()) {
             var outputFileSystem = compiler.outputFileSystem;
             var outputOptions = compiler.options.output;
-            var main = path.join(outputOptions.path, outputOptions.filename);
+            var filename = self.filename || outputOptions.filename;
+            var main = path.join(outputOptions.path, filename);
             var errors = stripAnsi(stats.toString({
                 hash: false,
                 version: false,
@@ -29,7 +33,12 @@ BrowserEslint.prototype.apply = function(compiler) {
                 assetsSort: false
             }).replace(/\n/g, '\\n'));
             var contents = outputFileSystem.readFileSync(main);
-            outputFileSystem.writeFile(main, contents + "\n\n" + 'console.warn(\'WEBPACK BUILD OUTPUT\', \'' + errors + '\')', 'utf-8', function(){});
+            var lineBreak = "\n\n";
+            var warnOpen = 'console.warn(\'WEBPACK BUILD OUTPUT\', \'';
+            var warnClose = '\')';
+            var err = errors.replace('\'', '\\\'')
+            
+            outputFileSystem.writeFile(main, contents + lineBreak + warnOpen + err + warnClose, 'utf-8', function(){});
         }
     });
 };
